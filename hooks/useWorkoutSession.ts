@@ -1,0 +1,12 @@
+"use client";
+import { useEffect, useMemo, useState } from "react";
+import { exercises } from "@/data/exercises";
+import { todayPlan } from "@/data/plans";
+import { calculateProgress, getCoachCue } from "@/lib/workout-engine";
+import { playCountdown, playTone, speakThai } from "@/lib/audio";
+export function useWorkoutSession() { const planExercises = useMemo(() => todayPlan.exerciseIds.map((id) => exercises.find((exercise) => exercise.id === id)!), []); const [exerciseIndex, setExerciseIndex] = useState(0); const exercise = planExercises[exerciseIndex]; const [secondsLeft, setSecondsLeft] = useState(exercise.workSeconds); const [phase, setPhase] = useState<"work" | "rest" | "complete">("work"); const [isRunning, setIsRunning] = useState(true); const [soundOn, setSoundOn] = useState(true);
+useEffect(() => { setSecondsLeft(phase === "rest" ? exercise.restSeconds : exercise.workSeconds); setIsRunning(true); }, [exerciseIndex, phase, exercise.restSeconds, exercise.workSeconds]);
+useEffect(() => { if (!isRunning || phase === "complete") return; const id = window.setInterval(() => { setSecondsLeft((value) => { if (value <= 1) { if (phase === "work") { setPhase("rest"); if (soundOn) { playTone(540, 0.2, 0.15); speakThai("พักได้ หายใจลึก ๆ"); } return exercise.restSeconds; } if (exerciseIndex >= planExercises.length - 1) { setPhase("complete"); setIsRunning(false); if (soundOn) speakThai("เยี่ยมมาก จบโปรแกรมแล้ว"); return 0; } setExerciseIndex((current) => current + 1); setPhase("work"); if (soundOn) speakThai("เริ่มท่าถัดไป"); return planExercises[exerciseIndex + 1].workSeconds; } return value - 1; }); }, 1000); return () => window.clearInterval(id); }, [isRunning, phase, exerciseIndex, planExercises, exercise, soundOn]);
+useEffect(() => { if (soundOn && isRunning && phase === "work") playCountdown(secondsLeft); }, [secondsLeft, soundOn, isRunning, phase]);
+function skip() { if (phase === "work") { setPhase("rest"); return; } if (exerciseIndex >= planExercises.length - 1) { setPhase("complete"); return; } setExerciseIndex((current) => current + 1); setPhase("work"); }
+const total = phase === "rest" ? exercise.restSeconds : exercise.workSeconds; return { exercise, exerciseIndex, totalExercises: planExercises.length, secondsLeft, phase, isRunning, soundOn, progress: calculateProgress(total, secondsLeft), coachCue: getCoachCue(exercise, secondsLeft), setIsRunning, setSoundOn, skip }; }

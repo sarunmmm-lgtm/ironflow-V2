@@ -1,0 +1,4 @@
+import Image from "next/image";
+import type { Exercise } from "@/types/workout";
+import { cn } from "@/lib/cn";
+export function ExerciseCard({ exercise, index, active }: { exercise: Exercise; index: number; active?: boolean }) { return <div className={cn("mb-2.5 grid w-full grid-cols-[72px_1fr_auto] items-center gap-3 rounded-3xl border bg-white/[.045] p-2.5 text-left", active ? "border-iron-accent/60" : "border-white/[.08]")}><Image src={exercise.thumbnailImage} alt={exercise.name} width={144} height={124} className="h-[62px] w-[72px] rounded-[18px] object-cover"/><div><strong className="block font-bold">{index + 1}. {exercise.name}</strong><small className="text-iron-muted">{exercise.part} · {exercise.reps} ครั้ง</small></div><span className="rounded-full border border-iron-accent/20 bg-iron-accent/10 px-2.5 py-1.5 text-xs font-bold text-iron-accent">{exercise.workSeconds}s</span></div>; }

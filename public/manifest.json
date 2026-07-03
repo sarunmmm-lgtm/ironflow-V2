@@ -1,0 +1,10 @@
+{
+  "name": "IRONFLOW AI",
+  "short_name": "IRONFLOW",
+  "description": "AI strength coach for weight training",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030503",
+  "theme_color": "#030503",
+  "icons": []
+}

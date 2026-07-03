@@ -1,0 +1,2 @@
+import { Zap } from "lucide-react";
+export function Brand() { return <div className="flex items-center gap-2.5"><div className="grid h-[42px] w-[42px] place-items-center rounded-2xl bg-gradient-to-br from-iron-accent to-iron-accent2 text-[#071004] shadow-glow"><Zap size={22}/></div><div><div className="text-2xl font-black leading-none tracking-[-.8px]">IRON<span className="text-iron-accent">FLOW</span></div><div className="text-xs font-medium text-iron-muted">AI strength coach</div></div></div>; }

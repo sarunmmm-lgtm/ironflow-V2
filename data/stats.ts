@@ -1,0 +1,1 @@
+export const stats = { recovery: 82, streakDays: 18, trainingHours: 11, caloriesThisMonth: 5420, trainingLoad: [54,38,72,45,63,88,56,78,44,82,68,92,58], heatmap: [1,1,.4,0,1,.4,1,1,0,.4,1,1,1,.4,0,1,1,1,.4,1,0,1,1,1,.4,1,0,1] };
